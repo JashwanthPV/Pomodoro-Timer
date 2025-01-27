@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro Timer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        #timer {
+            font-size: 48px;
+            margin: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            margin: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pomodoro Timer</h1>
+    <div id="timer">25:00</div>
+    <button onclick="startTimer()">Start</button>
+    <button onclick="resetTimer()">Reset</button>
+
+    <script>
+        let countdown;
+        let timerDisplay = document.getElementById('timer');
+        let totalTime = 25 * 60; // 25 minutes in seconds
+
+        function updateTimerDisplay(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            timerDisplay.textContent = `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+        }
+
+        function startTimer() {
+            clearInterval(countdown); // Clear any existing timer
+            const endTime = Date.now() + totalTime * 1000;
+
+            countdown = setInterval(() => {
+                const secondsLeft = Math.round((endTime - Date.now()) / 1000);
+                if (secondsLeft <= 0) {
+                    clearInterval(countdown);
+                    timerDisplay.textContent = "Time's up!";
+                    return;
+                }
+                updateTimerDisplay(secondsLeft);
+            }, 1000);
+        }
+
+        function resetTimer() {
+            clearInterval(countdown);
+            totalTime = 25 * 60;
+            updateTimerDisplay(totalTime);
+        }
+
+        updateTimerDisplay(totalTime); // Initialize timer display
+    </script>
+</body>
+</html>
